@@ -1,8 +1,7 @@
 {
     "name": "saeedvir/projectghost",
     "description": "project change monitor",
-    "type": "laravel package",
-    "license": "GPL",
+    "license": "MIT",
     "authors": [
         {
             "name": "Saeed",
