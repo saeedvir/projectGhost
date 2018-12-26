@@ -2,8 +2,13 @@
 This package will help you see changes to a pre-built Laravel project and get those changes as a compressed file.
 
 Here are a few short examples of what you can do:
+## توضیحات فارسی
+در هنگام توسعه پروژه خود گاهی نیاز است که تغییراتی که از یک لحظه اتفاق می افتد را ببینیم.
 
-##Notice
+از دیگر استفاده های آن می توان به زمانی اشاره کرد که شما در حال توسعه یک پروژه بر روی هاست اشتراکی هستید ، در آن جا شما دسترسی به Git یا Composer ندارید
+بنابراین می توانید تغییرات را ببینید و در یک فایل فشرده به هاست خود منتقل کنید.
+
+## Notice
 Note that this package is in development and may have a lot of bugs at first
 
 ### How to install ?
