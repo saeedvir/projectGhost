@@ -18,7 +18,7 @@ class ProjectGhostCommand extends Command {
      *
      * @var string
      */
-    protected $description = 'project change monitoring !';
+    protected $description = 'Project Change Monitoring';
 
     /**
      * Create a new command instance.
@@ -168,7 +168,7 @@ class ProjectGhostCommand extends Command {
                             }
                             $zip->close();
 
-                            echo $destination . ' is created ! copy it !' . "\r\n";
+                            echo $destination . ' copy it !' . "\r\n";
                         }
                     }
                 } elseif ($this->argument('options') == 'log') {
@@ -194,18 +194,18 @@ class ProjectGhostCommand extends Command {
                 }
             }
 
-            echo "\r\n" . 'ok ! please use for check again: ' . "\r\n" . "\r\n" . "php artisan project:ghost init" . "\r\n";
+            echo "\r\n" . 'ok ! you can use : ' . "\r\n" . "\r\n" . "php artisan project:ghost init" . "\r\n";
 
         } else {
-            echo "\r\n" . "php artisan project:ghost init \t 'init and check before scan'"
+            echo "\r\n" . "php artisan project:ghost init \t 'This command creates a digital signature from all the files in the project'"
                 . "\r\n"
-                . "php artisan project:ghost scan \t 'scan for changes'"
+                . "php artisan project:ghost scan \t 'The following command finds files that have been modified or created or deleted'"
                 . "\r\n"
-                . "php artisan project:ghost scan zip \t 'scan for changes and create zip file'"
+                . "php artisan project:ghost scan zip \t 'scan for changes and make these changes in a zip file'"
                 . "\r\n"
-                . "php artisan project:ghost scan log \t 'scan for changes and print it'"
+                . "php artisan project:ghost scan log \t 'scan for changes and show you a summary of these changes'"
                 . "\r\n"
-                . "php artisan project:ghost help \t 'show help'";
+                . "php artisan project:ghost help \t 'see help'";
         }
     }
 
