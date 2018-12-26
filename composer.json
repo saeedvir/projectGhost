@@ -1,0 +1,25 @@
+{
+    "name": "saeedvir/projectghost",
+    "description": "project change monitor",
+    "type": "laravel package",
+    "license": "GPL",
+    "authors": [
+        {
+            "name": "Saeed",
+            "email": "saeed.es91@gmail.com"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "ProjectGhost\\": "src/"
+        }
+    },
+      "extra": {
+        "laravel": {
+            "providers": [
+                "ProjectGhost\\ProjectGhostServiceProvider"
+            ]
+        }
+    }
+}
