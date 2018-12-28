@@ -51,6 +51,30 @@ For Help :
 php artisan project:ghost help
 ```
 
+## How to execute artisan commands from route or controller in Laravel ?
+
+```php
+Route::get('ProjectGhostCommands/{command}', function ($command) {
+
+	/*
+		For Example :
+		
+		http://127.0.0.1/ProjectGhostCommands/init 
+		http://127.0.0.1/ProjectGhostCommands/scan 
+		http://127.0.0.1/ProjectGhostCommands/scan log 
+		http://127.0.0.1/ProjectGhostCommands/scan zip 
+	*/
+
+	$command = explode(' ',$command);
+	if(!isset($command[1])){
+		$command[1] = null;
+	}
+  
+    \Artisan::call('project:ghost',['mode'=>$command[0],'options'=>$command[1]]); 
+
+});
+```
+
 ## Security
 
 If you discover any security related issues, please email [saeed.es91@gmail.com](mailto:saeed.es91@gmail.com) instead of using the issue tracker.
