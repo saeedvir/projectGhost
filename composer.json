@@ -28,6 +28,9 @@
             "providers": [
                 "ProjectGhost\\ProjectGhostServiceProvider"
             ]
+        },
+        "branch-alias": {
+            "dev-master": "dev"
         }
     }
 }
