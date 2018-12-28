@@ -3,10 +3,9 @@
 namespace ProjectGhost;
 
 use Illuminate\Console\Command;
-use \RecursiveIteratorIterator;
-use \ZipArchive;
 
-class ProjectGhostCommand extends Command {
+class ProjectGhostCommand extends Command
+{
 
     /**
      * The name and signature of the console command.
@@ -22,11 +21,10 @@ class ProjectGhostCommand extends Command {
      */
     protected $description = 'Project Change Monitoring';
 
-
     protected $dbFile = '/storage/.projectGhost';
 
-    protected $directorySeperator =  '/';
-    
+    protected $directorySeperator = '/';
+
     /**
      * Create a new command instance.
      *
@@ -51,9 +49,9 @@ class ProjectGhostCommand extends Command {
          */
 
         if ($this->argument('mode') == 'init') {
-           
+
             $this->initCommand();
-            
+
         } elseif ($this->argument('mode') == 'scan') {
 
             $this->scanCommand();
@@ -66,30 +64,30 @@ class ProjectGhostCommand extends Command {
                     "php artisan project:ghost scan \t 'The following command finds files that have been modified or created or deleted'",
                     "php artisan project:ghost scan zip \t 'scan for changes and make these changes in a zip file'",
                     "php artisan project:ghost scan log \t 'scan for changes and show you a summary of these changes'",
-                    "php artisan project:ghost help \t 'see help'"
+                    "php artisan project:ghost help \t 'see help'",
                 ]
             );
-            
+
         }
     }
 
+    protected function initCommand()
+    {
 
-    protected function initCommand(){
-        
-        $this->dbFile = base_path().$this->dbFile;
+        $this->dbFile = base_path() . $this->dbFile;
 
         $path = realpath(base_path());
 
         $load_files = [];
 
-        $objects = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($path), RecursiveIteratorIterator::SELF_FIRST);
+        $objects = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($path), \RecursiveIteratorIterator::SELF_FIRST);
         foreach ($objects as $name => $object) {
             if (!is_file($name)) {
                 continue;
             }
 
-            $relativePath = str_replace([$path,'./'], ['.',$path . DIRECTORY_SEPARATOR], $name);
-            
+            $relativePath = str_replace([$path, './'], ['.', $path . DIRECTORY_SEPARATOR], $name);
+
             if (DIRECTORY_SEPARATOR != $this->directorySeperator) {
                 $relativePath = str_replace(DIRECTORY_SEPARATOR, $this->directorySeperator, $relativePath);
             }
@@ -102,28 +100,29 @@ class ProjectGhostCommand extends Command {
         }
 
         file_put_contents($this->dbFile, json_encode($load_files));
-        
+
         usleep(500);
 
         $this->printMessages(
             [
                 'scan file(s) : ' . count($load_files),
-                'ok ! you can work in your project and use ' . "\r\n" . "php artisan project:ghost scan zip"
+                'ok ! you can work in your project and use ' . "\r\n" . "php artisan project:ghost scan zip",
             ]
         );
 
     }
 
-    protected function scanCommand(){
+    protected function scanCommand()
+    {
 
-        $this->dbFile = base_path().$this->dbFile;
+        $this->dbFile = base_path() . $this->dbFile;
 
         if (!is_file($this->dbFile)) {
-            
+
             file_put_contents($this->dbFile, '');
-            
-            $this->printMessages ('please use : php artisan project:ghost init');
-            
+
+            $this->printMessages('please use : php artisan project:ghost init');
+
             return false;
         }
 
@@ -141,14 +140,14 @@ class ProjectGhostCommand extends Command {
             $load_files = json_decode($load_files, true);
         }
 
-        $objects = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($path), RecursiveIteratorIterator::SELF_FIRST);
+        $objects = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($path), \RecursiveIteratorIterator::SELF_FIRST);
         foreach ($objects as $name => $object) {
-            
+
             if (!is_file($name)) {
                 continue;
             }
 
-            $relativePath = str_replace([$path,'./'], ['.',$path . DIRECTORY_SEPARATOR], $name);
+            $relativePath = str_replace([$path, './'], ['.', $path . DIRECTORY_SEPARATOR], $name);
             if (DIRECTORY_SEPARATOR != $this->directorySeperator) {
                 $relativePath = str_replace(DIRECTORY_SEPARATOR, $this->directorySeperator, $relativePath);
             }
@@ -181,50 +180,51 @@ class ProjectGhostCommand extends Command {
                 'scan file(s) : ' . count($load_files),
                 'new file(s) : ' . count($new_files),
                 'modified file(s) : ' . count($mod_files),
-                'deleted file(s) : ' . count($del_files)
+                'deleted file(s) : ' . count($del_files),
             ]
         );
 
         if ($this->argument('options') != null) {
             if ($this->argument('options') == 'zip') {
-                
+
                 $this->zipFileGenerator(
                     $path,
-                    base_path().'/storage/projectGhost_' . @time() . '.zip',
+                    base_path() . '/storage/projectGhost_' . @time() . '.zip',
                     array_merge($new_files, $mod_files)
                 );
 
             } elseif ($this->argument('options') == 'log') {
 
-                $this->printLogfiles($new_files,'new files ');
-                
-                $this->printLogfiles($mod_files,'modified files ');
-                
-                $this->printLogfiles($del_files,'deleted files ');
+                $this->printLogfiles($new_files, 'new files ');
+
+                $this->printLogfiles($mod_files, 'modified files ');
+
+                $this->printLogfiles($del_files, 'deleted files ');
 
             }
         }
 
         $this->printMessages(
-                [
-                    'ok ! you can use : ',
-                    'php artisan project:ghost init'
-                ]   
-            );
+            [
+                'ok ! you can use : ',
+                'php artisan project:ghost init',
+            ]
+        );
     }
 
-    protected function zipFileGenerator($source,$destination,$files=[]){
+    protected function zipFileGenerator($source, $destination, $files = [])
+    {
         // $source = $path;
         // $destination = base_path().'/projectGhost_' . @time() . '.zip';
 
         if (extension_loaded('zip') === true) {
             if (file_exists($source) === true) {
-                $zip = new ZipArchive();
-                if ($zip->open($destination, ZIPARCHIVE::CREATE) === true) {
+                $zip = new \ZipArchive();
+                if ($zip->open($destination, \ZIPARCHIVE::CREATE) === true) {
                     $source = realpath($source);
                     if (is_dir($source) === true) {
                         foreach ($files as $file) {
-                            
+
                             $file = realpath($file);
 
                             if (is_dir($file) === true) {
@@ -248,25 +248,27 @@ class ProjectGhostCommand extends Command {
         }
     }
 
-    protected function printMessages($messages){
-        if(is_array($messages)){
+    protected function printMessages($messages)
+    {
+        if (is_array($messages)) {
             echo "\r\n";
-            foreach($messages as $message){
-                echo $message."\r\n\r\n";
+            foreach ($messages as $message) {
+                echo $message . "\r\n\r\n";
             }
-        }else{
-            "\r\n" .$messages."\r\n\r\n";
+        } else {
+            "\r\n" . $messages . "\r\n\r\n";
         }
     }
 
-    protected function printLogfiles($files=[],$file_name){
+    protected function printLogfiles($files = [], $file_name)
+    {
         if (count($files) > 0) {
-            echo "\r\n" . $file_name.' : ' . "\r\n";
+            echo "\r\n" . $file_name . ' : ' . "\r\n";
             foreach ($files as $f) {
                 echo $f . "\r\n";
             }
-        }else{
-            echo "\r\n" . $file_name.' : ( 0 )' . "\r\n";
+        } else {
+            echo "\r\n" . $file_name . ' : ( 0 )' . "\r\n";
         }
     }
 
