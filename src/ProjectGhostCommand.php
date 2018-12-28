@@ -43,7 +43,7 @@ class ProjectGhostCommand extends Command {
 
          */
 
-        $db_file = 'storage/.projectGhost';
+        $db_file = base_path().'/storage/.projectGhost';
         if ($this->argument('mode') == 'init') {
 
             $path = realpath(base_path());
@@ -142,7 +142,7 @@ class ProjectGhostCommand extends Command {
             if ($this->argument('options') != null) {
                 if ($this->argument('options') == 'zip') {
                     $source = $path;
-                    $destination = 'projectGhost_' . @time() . '.zip';
+                    $destination = base_path().'/projectGhost_' . @time() . '.zip';
 
                     if (extension_loaded('zip') === true) {
                         if (file_exists($source) === true) {
