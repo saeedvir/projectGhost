@@ -75,6 +75,11 @@ Route::get('ProjectGhostCommands/{command}', function ($command) {
 });
 ```
 
+## Other Packages
+
+- [Laravel Assets Optimizer](https://github.com/saeedvir/laravel-assets-optimizer)
+- [Laravel Mysql Backup](https://github.com/saeedvir/laravel-mysql-backup)
+
 ## Security
 
 If you discover any security related issues, please email [saeed.es91@gmail.com](mailto:saeed.es91@gmail.com) instead of using the issue tracker.
